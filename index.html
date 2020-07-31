@@ -1,0 +1,188 @@
+<script type="text/javascript"></script>
+
+<script>
+  function submit() {
+	var xhr = new XMLHttpRequest();
+	var url = document.getElementById('url').value;
+
+	var myValue = document.getElementById("myTextArea").value;
+	var json = myValue.replace(/[\\]/g, '');
+	var antes = Date.now();
+		
+	if (url === "") {
+		colorchange("red", "175px");
+		document.getElementById('status').innerHTML = "URL inválida!"
+		onloadbutton(false, "Send");
+		return;
+	}
+
+
+	onloadbutton(true, "Sending...");
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.onreadystatechange = function () {
+		if (xhr.readyState === 4 && xhr.status === 200) {
+			var json = JSON.parse(xhr.responseText);
+
+			fn();
+			colorchange("green", "197px");
+			document.getElementById('response').innerHTML = xhr.responseText;
+			document.getElementById('status').innerHTML = xhr.status + " " + xhr.statusText;
+			var duracao = Date.now() - antes;
+			onloadbutton(false, "Send");
+			document.getElementById('time').innerHTML = duracao + "ms";
+			
+		} if(xhr.status === 400) {
+				var json = JSON.parse(xhr.responseText);
+
+				fn();
+				colorchange("red", "120px");
+				document.getElementById('response').innerHTML = xhr.responseText;
+				document.getElementById('status').innerHTML = xhr.status + " " + xhr.statusText;
+				var duracao = Date.now() - antes;
+				onloadbutton(false, "Send");
+				document.getElementById('time').innerHTML = duracao + "ms";
+				
+				} if(xhr.status === 404) {
+					var json = JSON.parse(xhr.responseText);
+					
+					fn();
+					colorchange("red", "120px");
+					document.getElementById('response').innerHTML = xhr.responseText;
+					document.getElementById('status').innerHTML = xhr.status + " " + xhr.statusText;
+					var duracao = Date.now() - antes;
+					onloadbutton(false, "Send");
+					document.getElementById('time').innerHTML = duracao + "ms";
+				
+				}
+
+					if(xhr.status === 405) {
+						var json = JSON.parse(xhr.responseText);
+
+						fn();
+						colorchange("red", "120px");
+						document.getElementById('response').innerHTML = xhr.responseText;
+						document.getElementById('status').innerHTML = xhr.status + " " + xhr.statusText;
+						var duracao = Date.now() - antes;
+						onloadbutton(false, "Send");
+						document.getElementById('time').innerHTML = duracao + "ms";
+
+					}
+						if(xhr.status === 500) {
+							var json = JSON.parse(xhr.responseText);
+
+							fn();
+							colorchange("red", "120px");
+							document.getElementById('response').innerHTML = xhr.responseText;
+							document.getElementById('status').innerHTML = xhr.status + " " + xhr.statusText;
+							var duracao = Date.now() - antes;
+							onloadbutton(false, "Send");
+							document.getElementById('time').innerHTML = duracao + "ms";
+
+						} else { 
+							onloadbutton(false, "Send");
+							}
+
+				
+	};
+	
+	xhr.send(json);
+
+	prettyPrint();
+
+  }
+  
+	function prettyPrint() {
+		var ugly = document.getElementById('myTextArea').value;
+		var obj = JSON.parse(ugly);
+		var pretty = JSON.stringify(obj, undefined, 4);
+		document.getElementById('myTextArea').value = pretty;
+	}
+
+	function fn() {
+		var teste = [];
+		
+		for (var i = 1; i <= 305; i++) {
+			for (var x = 1; x <= 305; x++) {
+				if(x != i){
+					teste.push(i+'|'+x);
+				}
+			}
+		}
+	}
+
+	function colorchange(color, px) { 
+		document.getElementById('status').style.color = color;
+		document.getElementById('status').style.marginLeft = px; 
+		document.getElementById('status').style.textAlign = "center";
+	}
+
+	function onloadbutton(value, status) {
+	
+	const button = document.getElementById('click')
+	button.value= status;
+	button.disabled = value;
+	
+	}
+	
+
+	
+
+</script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- HTML5 -->
+<meta charset="utf-8"/>
+<html>
+<style type="text/css">
+
+textarea {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: start;
+}
+.container{
+	width: 960px;
+	height:100%;
+	background-color: #DCDCDC;
+	margin: 0 auto 0 auto;
+	}
+.center{
+	text-align: center;
+	}	
+
+</style>
+<div class="container"> 
+
+	<h1 class="center">SIMPLE SEND POST JSON</h1><br>
+
+	<div style="text-align: center;">
+		<form action="javascript:submit()" >
+		URL: <input required style="width:500px" type="text" value="http://localhost/endpoint/data" id="url" >
+		</form>
+	</div>
+
+	<div style="text-align: center;margin-right: 344px" >
+		<a>Data:</a><br><br>
+	</div>	
+
+	<div>	
+		<form action="javascript:submit()">
+			<textarea id="myTextArea" cols=50 rows=10 required>{"number":"","text":""}</textarea>
+				<input style="margin-top: 15px; margin-left: 65%; margin-right: 150px;" type="submit" value="Send" id="click" >
+		</form>
+	</div>
+
+	<div class="center" >
+		<a style="margin-right: 45px"> Response:</a>
+			<a id="status"></a> 
+			<a id="time" style="color: green;">
+		</a><br>
+	<tbody>
+		<br><textarea id="response" cols=50 rows=10 disabled></textarea><br><br>
+	</tbody>
+	</div>
+	
+</div>
+
+<html>
