@@ -16,8 +16,10 @@
 		return;
 	}
 
-
 	onloadbutton(true, "Sending...");
+	document.getElementById('status').innerHTML = ""
+	document.getElementById('time').innerHTML = ""
+		
 	xhr.open("POST", url, true);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.onreadystatechange = function () {
@@ -25,7 +27,7 @@
 			var json = JSON.parse(xhr.responseText);
 
 			fn();
-			colorchange("green", "197px");
+			colorchange("green", "158px");
 			document.getElementById('response').innerHTML = xhr.responseText;
 			document.getElementById('status').innerHTML = xhr.status + " " + xhr.statusText;
 			var duracao = Date.now() - antes;
@@ -168,7 +170,7 @@ textarea {
 
 	<div>	
 		<form action="javascript:submit()">
-			<textarea id="myTextArea" cols=50 rows=10 required>{"number":"","text":""}</textarea>
+			<textarea id="myTextArea" cols=50 rows=10 required>{"number":"5511981568415","text":"123123123"}</textarea>
 				<input style="margin-top: 15px; margin-left: 65%; margin-right: 150px;" type="submit" value="Send" id="click" >
 		</form>
 	</div>
